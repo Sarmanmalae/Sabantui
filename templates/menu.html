@@ -1,0 +1,68 @@
+{% extends "base.html" %}
+
+{% block content %}
+{% if not all_meals %}
+<a style="color: #ffffff; font-size: 43px">В меню пока пусто😞</a>
+{% else %}
+<a style="color: #ffffff; font-size: 43px">Меню</a>
+<a href="/order" class="btn btn-warning" style="margin-left: 20px; margin-bottom: 20px">
+    Заказать
+</a>
+{% for j in all_meals %}
+<h2 style="color: #ffffff; font-size: 24px;">{{ j }}</h2>
+{% for c in range(all_meals[j][1]) %}
+<div class="row row-cols-1 row-cols-md-3 g-4">
+    {% for i in all_meals[j][0][c] %}
+    <div class="col">
+        <div class="card" style="width: 18rem; height: 18 rem;">
+            <div class="card-body">
+                {% if i[2] %}
+                <img src="static/img/{{ i[2] }}" class="card-img-top" alt="..." style="width: 15.8rem; height: 10rem;">
+                <br>
+                {% endif %}
+                <br>
+                <h5 class="card-title" style="padding-bottom: 10px">{{ i[0] }}</h5>
+                {% if i[3] and current_user.is_authenticated and current_user.admin == False %}
+                <a href="/choose/{{ i[-1] }}/{{ current_user.id }}" class="btn btn-primary">Добавить</a>
+                {% elif not i[3] %}
+                <a href="#" class="btn btn-primary disabled">Нет в наличии...</a>
+                {% elif not current_user.is_authenticated or current_user.admin == True %}
+                <a href="#" class="btn btn-primary disabled">Добавить</a>
+                {% endif %}
+                <a style="color: #000000">{{ i[1] }}руб.</a>
+                <br>
+                {% if not i[3]%}
+                <h6>Нельзя выбрать...</h6>
+                {% elif i[4] > 0 %}
+                <h6>Выбрано: {{ i[4] }} шт.</h6>
+                {% elif i[4] == 0 %}
+                <h6>Не выбрано</h6>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+    {% endfor %}
+</div>
+<br>
+{% endfor %}
+{% endfor %}
+<br>
+<div class="modal" tabindex="-1">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title">Modal title</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <p>Modal body text goes here.</p>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+        <button type="button" class="btn btn-primary">Save changes</button>
+      </div>
+    </div>
+  </div>
+</div>
+{% endif %}
+{% endblock %}
