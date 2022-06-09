@@ -4,7 +4,7 @@
 <h1 style="color: #ffffff;">Авторизация</h1>
 <form action="" method="post">
     {{ form.hidden_tag() }}
-    <p style="color: #ffffff; font-size: 20px;">
+    <p style="color: #F59179; font-size: 20px;">
         {{ form.surname.label }}<br>
         {{ form.surname(class="form-control") }}<br>
         {% for error in form.surname.errors %}
@@ -13,7 +13,7 @@
     </p>
     {% endfor %}
     </p>
-    <p style="color: #ffffff; font-size: 20px;">
+    <p style="color: #F59179; font-size: 20px;">
         {{ form.name.label }}<br>
         {{ form.name(class="form-control") }}<br>
         {% for error in form.name.errors %}
@@ -22,7 +22,7 @@
     </p>
     {% endfor %}
     </p>
-    <p style="color: #ffffff; font-size: 20px;">
+    <p style="color: #F59179; font-size: 20px;">
         {{ form.last_name.label }}<br>
         {{ form.last_name(class="form-control") }}<br>
         {% for error in form.last_name.errors %}
@@ -31,7 +31,7 @@
     </p>
     {% endfor %}
     </p>
-    <p style="color: #ffffff; font-size: 20px;">
+    <p style="color: #F59179; font-size: 20px;">
         {{ form.ryad.label }}<br>
         {{ form.ryad(class="form-control") }}<br>
         {% for error in form.ryad.errors %}
@@ -40,7 +40,7 @@
     </p>
     {% endfor %}
     </p>
-    <p style="color: #ffffff; font-size: 20px;">
+    <p style="color: #F59179; font-size: 20px;">
         {{ form.mesto.label }}<br>
         {{ form.mesto(class="form-control") }}<br>
         {% for error in form.mesto.errors %}
@@ -49,7 +49,7 @@
     </p>
     {% endfor %}
     </p>
-    <p style="color: #36B6B5; font-size: 20px;">{{ form.remember_me() }} {{ form.remember_me.label }}</p>
+    <p style="color: #F59179; font-size: 20px;">{{ form.remember_me() }} {{ form.remember_me.label }}</p>
     <p>{{ form.submit(type="submit", class="btn btn-primary") }}</p>
     <p>{{ message }}</p>
 </form>
