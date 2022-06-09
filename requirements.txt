@@ -1,0 +1,6 @@
+SQLAlchemy~=1.4.36
+Werkzeug~=2.1.2
+WTForms~=3.0.1
+Flask~=2.1.2
+aiogram~=2.20
+requests~=2.27.1

@@ -28,7 +28,14 @@ height: 50px;
 .custom-tooltip {
   --bs-tooltip-bg: var(--bs-primary);
 }
-body {  background: linear-gradient(45deg, #EECFBA, #C5DDE8) no-repeat center center fixed;
-        background-size: cover;
+body {
+    -moz-background-size: 100%; /* Firefox 3.6+ */
+    -webkit-background-size: 100%; /* Safari 3.1+ и Chrome 4.0+ */
+    -o-background-size: 100%; /* Opera 9.6+ */
+    background-size: cover; /* Современные браузеры */
+
 }
-/* Created with https://www.css-gradient.com */
+
+/* body {  background: linear-gradient(45deg, #EECFBA, #C5DDE8) no-repeat center center fixed;
+        background-size: cover;
+} */

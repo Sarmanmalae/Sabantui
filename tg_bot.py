@@ -17,8 +17,6 @@ from requests import get, put, post
 from data import db_session
 from data.meals import Meals
 from data.orders import Orders
-from data.shop_now import ShopNow
-from data.shops import Shops
 from data.users import Users
 
 API_TOKEN = '5305383108:AAFZkZajF_hA03HshrF5-mPnkyTY77caui0'
@@ -45,30 +43,31 @@ async def process_start_command(message: types.Message):
     await message.reply("Начнем работу!", reply_markup=keyboard1)
 
 
-@dp.callback_query_handler(text="ready")
-async def send_random_value(call: types.CallbackQuery):
-    a = call.message.text.split('\n')
-    num = int(a[0].split()[2])
-    db_sess = db_session.create_session()
-    a = db_sess.query(Orders).filter(Orders.shop_order_num == num).first()
-    a.is_ready = 2
-    db_sess.commit()
-    all_meal = list(set(a.meals.split(', ')))
-    s = '\n'.join(
-        db_sess.query(Meals).filter(Meals.id == i).first().name + f'( {a.meals.count(i)}шт. )' for i in all_meal)
-    db_sess.commit()
-    await bot.delete_message(
-        chat_id=db_sess.query(Shops).filter(Shops.id == db_sess.query(ShopNow).first().shop_id).first().tg_name,
-        message_id=call.message.message_id)
-    await bot.send_message(
-        db_sess.query(Shops).filter(Shops.id == db_sess.query(ShopNow).first().shop_id).first().tg_name,
-        f'Номер заказа: {a.id}\nИмя клиента: {db_sess.query(Users).filter(Users.id == a.client_id).first().name}\n{s}',
-        reply_markup=keyboard2)
-
-
 async def order_handler():
     while True:
         await asyncio.sleep(1)  # задержка
+
+        @dp.callback_query_handler(text="ready")
+        async def ready_not(call: types.CallbackQuery):
+            a = call.message.text.split('\n')
+            num = int(a[0].split()[2])
+            db_sess = db_session.create_session()
+            a = db_sess.query(Orders).filter(Orders.id == num).first()
+            a.is_ready = 2
+            db_sess.commit()
+            all_meal = list(set(a.meals.split(', ')))
+            s = '\n'.join(
+                db_sess.query(Meals).filter(Meals.id == i).first().name + f'( {a.meals.count(i)}шт. )' for i in
+                all_meal)
+            db_sess.commit()
+            await bot.delete_message(
+                chat_id=-1001693543128,
+                message_id=call.message.message_id)
+            await bot.send_message(
+                -1001693543128,
+                f'Номер заказа: {a.id}\nФИО клиента: {db_sess.query(Users).filter(Users.id == a.client_id).first().name} {db_sess.query(Users).filter(Users.id == a.client_id).first().surname} {db_sess.query(Users).filter(Users.id == a.client_id).first().last_name}\nРяд: {db_sess.query(Users).filter(Users.id == a.client_id).first().ryad}\nМесто: {db_sess.query(Users).filter(Users.id == a.client_id).first().mesto}\nаказ:\n{s}',
+                reply_markup=keyboard2)
+
         db_session.global_init("db/sabantuy.db")
         db_sess = db_session.create_session()
         a = db_sess.query(Orders).filter(Orders.is_ready == 0).first()
@@ -80,8 +79,8 @@ async def order_handler():
                 all_meal)
             db_sess.commit()
             await bot.send_message(
-                db_sess.query(Shops).filter(Shops.id == db_sess.query(ShopNow).first().shop_id).first().tg_name,
-                f'Номер заказа: {a.id}\nИмя клиента: {db_sess.query(Users).filter(Users.id == a.client_id).first().name}\n{s}',
+                -1001693543128,
+                f'Номер заказа: {a.id}\nФИО клиента: {db_sess.query(Users).filter(Users.id == a.client_id).first().name} {db_sess.query(Users).filter(Users.id == a.client_id).first().surname} {db_sess.query(Users).filter(Users.id == a.client_id).first().last_name}\nРяд: {db_sess.query(Users).filter(Users.id == a.client_id).first().ryad}\nМесто: {db_sess.query(Users).filter(Users.id == a.client_id).first().mesto}\nЗаказ:\n{s}',
                 reply_markup=keyboard)
 
 

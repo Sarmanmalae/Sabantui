@@ -9,7 +9,7 @@
     Заказать
 </a>
 {% for j in all_meals %}
-<h2 style="color: #ffffff; font-size: 24px;">{{ j }}</h2>
+<h2 style="color: #0D6EFD; font-size: 24px;">{{ j }}</h2>
 {% for c in range(all_meals[j][1]) %}
 <div class="row row-cols-1 row-cols-md-3 g-4">
     {% for i in all_meals[j][0][c] %}
@@ -22,14 +22,17 @@
                 {% endif %}
                 <br>
                 <h5 class="card-title" style="padding-bottom: 10px">{{ i[0] }}</h5>
-                {% if i[3] and current_user.is_authenticated and current_user.admin == False %}
+                {% if i[1] < 25 %}
+                <br>
+                {% endif %}
+                {% if i[3] and current_user.is_authenticated %}
                 <a href="/choose/{{ i[-1] }}/{{ current_user.id }}" class="btn btn-primary">Добавить</a>
                 {% elif not i[3] %}
                 <a href="#" class="btn btn-primary disabled">Нет в наличии...</a>
-                {% elif not current_user.is_authenticated or current_user.admin == True %}
-                <a href="#" class="btn btn-primary disabled">Добавить</a>
+                {% elif not current_user.is_authenticated %}
+                <a href="#" class="btn btn-primary disabled">Войдите в аккаунт</a>
                 {% endif %}
-                <a style="color: #000000">{{ i[1] }}руб.</a>
+                <br>
                 <br>
                 {% if not i[3]%}
                 <h6>Нельзя выбрать...</h6>
